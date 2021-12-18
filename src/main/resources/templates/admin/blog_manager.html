@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="admin/_fragments::header(~{::title})">
+    <title>博客管理</title>
+</head>
+<body>
+<!--导航部分-->
+<nav th:replace="admin/_fragments::nav(4)" class="ui segment vertical inverted m-padded-tb-mini m-shadow-small">
+</nav>
+<div class="ui attached pointing menu">
+    <div class="ui container">
+       <div class="right menu">
+           <a href="blog_add.html" th:href="@{/admin/blogs_add}" class="item">发布</a>
+           <a href="#" class="active item teal">博客管理</a>
+       </div>
+    </div>
+</div>
+<!--中间部分-->
+<div class="m-container m-padded-tb-big middle">
+    <div class="ui container" style="margin-top: 2em;">
+        <form id="form-btn" action="#" method="post" class="ui orange secondary segment form">
+            <div class="inline fields m-margin-tb-tiny">
+                <div class="field">
+                    <input type="text" name="title" placeholder="标题">
+                </div>
+                <div class="field">
+                    <div class="ui labeled action input">
+                        <div class="ui type selection dropdown">
+                            <input type="hidden" name="type">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">分类</div>
+                            <div class="menu" >
+                                <div class="item" th:each="type:${types}" data-value="1" th:data-value="${type.id}" th:text="${type.typeName}">错误日志</div>
+                            </div>
+                        </div>
+                        <a id="type-btn" class="ui teal compact basic button">清空已选分类</a>
+                    </div>
+
+                </div>
+                <div class="field">
+                    <div class="ui checkbox">
+                        <input type="checkbox" id="recommened" name="recommened">
+                        <label for="recommened">推荐</label>
+                    </div>
+                </div>
+                <div class="field">
+                    <button type="button" id="search-btn" class="ui small teal basic button"><i class="search icon"></i>条件搜索</button>
+                </div>
+                <div class="field">
+                    <a type="button" th:href="@{/admin/blogs_manager}" class="ui small teal basic button"><i class="search icon"></i>查询全部</a>
+                </div>
+
+            </div>
+        </form>
+        <div id="table-container" style="margin-top: 3em;">
+            <div class="ui message large" th:classappend="${msg == null}?'hidden':'teal basic'">
+                <div class="middle aligned content" th:utext="${msg}"></div>
+                <i class="close icon top aligned"></i>
+            </div>
+            <table th:fragment="blogList" class="ui celled orange table">
+                <thead>
+                <tr>
+                    <th class="single line one wide">编号</th>
+                    <th class="single line three wide">标题</th>
+                    <th class="single line one wide">分类</th>
+                    <th class="single line one wide">类型</th>
+                    <th class="single line one wide">推荐</th>
+                    <th class="single line one wide">状态</th>
+                    <th class="single line three wide">更新时间</th>
+                    <th class="single line three wide">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="blog,iterStat : ${page.content}">
+                    <td th:text="${page.size * page.number + iterStat.index+1}">1</td>
+                    <td th:text="${blog.title}">刻意联系清单</td>
+                    <td th:text="${blog.type.typeName}">认知升级</td>
+                    <td th:text="${blog.typeName}">认知升级</td>
+                    <td th:text="${blog.recommened}?'推荐':'不推荐'">是</td>
+                    <td th:text="${blog.published}==true?'已发布':'草稿'">是</td>
+                    <td th:text="${blog.updateTime}">22点44分</td>
+                    <td>
+                        <a href="#" th:href="@{/admin/blogs_update/{id}(id=${blog.id})}" class="ui teal basic button"><i class="edit icon"></i>编辑</a>
+                        <a href="#" th:href="@{/admin/blogs_delete/{id}(id=${blog.id})}" class="ui orange basic button"><i class="close icon"></i>删除</a>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr th:unless="${page.totalPages}>0">
+                    <th colspan="12" class="ui grey header center aligned">
+                        数据库中暂无数据
+                    </th>
+                </tr>
+                <tr th:unless="${page.totalPages}<=1 ">
+                    <th colspan="12">
+                        <div class="ui left floated pagination menu" th:if="${page.totalPages}>1">
+                            <a onclick="page(this)" th:attr="data-page=${page.number}-1" th:href="@{/admin/blogs_manager/(page=(${page.number}-1)<0?'':${page.number}-1)}" class="item" th:unless="${page.first}"> 上一页</a>
+                            <a onclick="page(this)" th:attr="data-page=${page.number}+1" th:href="@{/admin/blogs_manager/(page=(${page.number}+1)>${page.totalPages}?'':${page.number}+1)}" class="item" th:unless="${page.last}"> 下一页</a>
+                        </div>
+                    </th>
+
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<!--底部-->
+<footer th:replace="admin/_fragments::footer"  class="ui inverted segment vertical">
+</footer>
+
+<!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
+<!--/*/</th:block>/*/-->
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+    $('.dropdown').dropdown({
+        on : 'hover'
+    });
+    $('#type-btn').on('click',function(){
+        $(".ui.type.dropdown").dropdown("clear");
+    });
+
+    //实现点击搜索按钮，就发起一次Ajax请求
+    $("#search-btn").click(function(){
+        //在搜索时把page清零 这样就不会按当前页的数据进行筛选了
+        $("[name='page']").val(0);
+        loaddata();
+    });
+    //实现点击一个上一页或者下一页的按钮，就发起一次Ajax请求
+    function page(obj){
+        $("[name='page']").val($(obj).data("page"));
+        loaddata();
+    }
+    //Ajax请求，专门用于只刷新表格的请求
+    function loaddata(){
+        $("#table-container").load("blogs_search",{
+            title : $("[name='title']").val(),
+            type : $("[name='type']").val(),
+            recommened : $("[name='recommened']").prop('checked'),
+            page : $("[name='page']").val()
+        });
+    }
+    //后端回传的消息框 点击关闭操作
+    $('.message .close')
+        .on('click', function() {
+            $(this)
+                .closest('.message')
+                .transition('fade')
+            ;
+        });
+
+</script>
+</body>
+</html>

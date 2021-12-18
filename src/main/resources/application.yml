@@ -1,0 +1,4 @@
+spring:
+  profiles:
+    active: dev
+comment.avatar: /images/user-1.jpg

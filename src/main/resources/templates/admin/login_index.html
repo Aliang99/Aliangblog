@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments::header(~{::title})">
+    <meta charset="UTF-8">
+    <title>登录</title>
+</head>
+<body class="admin_background">
+<div class="ui middle aligned center grid m-container-small m-padded-tb-max" style="max-width: 30em;!important;">
+    <div class="column">
+        <h2 class="ui center aligned header" style="color: #BA5E53;">
+            <div class="content">
+                管理后台登录
+            </div>
+        </h2>
+        <form class="ui large form" th:action="@{/admin/login}" method="post">
+            <div class="ui stacked segment">
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="user circle icon"></i>
+                        <input type="text" name="username" placeholder="用户名" value="" th:value="${userName}">
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="ui left icon input">
+                        <i class="lock icon"></i>
+                        <input type="password" name="password" placeholder="密码">
+                    </div>
+                </div>
+                <button class="ui fluid large submit button" style="background-color: #BA5E53;color:#FFF">登 录</button>
+            </div>
+            <div class="ui error message">
+            </div>
+        </form>
+        <div class="ui error message large" th:classappend="${msg == null}?'hidden':''">
+
+            <div class="middle aligned content" th:utext="${msg}"></div>
+            <i class="close icon top aligned"></i>
+        </div>
+
+    </div>
+</div>
+
+<!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
+<!--/*/</th:block>/*/-->
+<script>
+    $('.ui .form').form({
+        fields: {
+            username: {
+                identifier: 'username',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入用户名'
+                }]
+            },
+            password: {
+                identifier: 'password',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入密码'
+                }]
+            }
+        }
+    });
+
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+    $('.dropdown').dropdown({
+        on : 'hover'
+    });
+
+    //后端回传的消息框 点击关闭操作
+    $('.message .close')
+        .on('click', function() {
+            $(this)
+                .closest('.message')
+                .transition('fade')
+            ;
+        });
+
+</script>
+</body>
+</html>

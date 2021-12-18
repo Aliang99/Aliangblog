@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments::header(~{::title})">
+    <title>关于我页面</title>
+</head>
+
+<body>
+<!--导航部分-->
+<nav th:replace="_fragments::nav(6)" class="ui segment vertical inverted m-padded-tb-mini m-shadow-small">
+</nav>
+
+<!--中间部分-->
+<div class="eleven wide column m-container m-padded-tb-big m-padded-lr-big">
+        <div class="ui container">
+            <div class="ui stackable grid teal" >
+                <!--左边图片-->
+                <div class="eleven wide column left-div">
+                    <div class="ui segment teal radius-div-img about-div-padding-b">
+                        <img src="../static/images/dm111.jpg" th:src="@{/images/bg/bg6.jpg}" alt="" class="ui rounded image radius-div-img">
+                    </div>
+                </div>
+                <!--右边详细信息-->
+                <div class="five wide column right-div">
+                    <div class="ui attached top segments">
+                        <div class="ui segment header teal">
+                            <span>关于我</span>
+                        </div>
+                        <div class="ui attached segment">
+                            <p class="m-text-thin m-black">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本人性格开朗，善于微笑，长于交际，会简单日语及芭蕾舞。我相信，这一切将成为我工作最大的财富。 我在很久就注意到贵公司，贵公司无疑是xxx行业中的姣姣者。同时我又了解到，这又是一支年轻而又富有活力的队伍。本人非常渴望能够在为其中的一员。</p>
+                        </div>
+                        <div class="ui attached segment">
+                            <div class="ui orange basic left pointing label m-margin-tb-tiny">编程</div>
+                            <div class="ui red basic left pointing label m-margin-tb-tiny">游戏</div>
+                            <div class="ui blue basic left pointing label m-margin-tb-tiny">装机</div>
+                            <div class="ui yellow basic left pointing label m-margin-tb-tiny">钓鱼</div>
+                            <div class="ui green basic left pointing label m-margin-tb-tiny">天文</div>
+                            <div class="ui teal basic left pointing label m-margin-tb-tiny">穿搭</div>
+                            <div class="ui pink basic left pointing label m-margin-tb-tiny">健身</div>
+
+                        </div>
+                        <div class="ui attached segment">
+                            <div class="ui teal basic left pointing label  m-margin-tb-tiny">JAVA</div>
+                            <div class="ui teal basic left pointing label  m-margin-tb-tiny">MySQL</div>
+                            <div class="ui teal basic left pointing label  m-margin-tb-tiny">Spring</div>
+                            <div class="ui teal basic left pointing label  m-margin-tb-tiny">SpringMVC</div>
+                            <div class="ui teal basic left pointing label  m-margin-tb-tiny">SpringBoot</div>
+                            <div class="ui teal basic left pointing label  m-margin-tb-tiny">SpringCloud</div>
+                            <div class="ui teal basic left pointing label  m-margin-tb-tiny">Mybatis</div>
+                            <div class="ui teal basic left pointing label  m-margin-tb-tiny">数据结构</div>
+                        </div>
+                        <div class="ui bottom attached segment" style="margin-bottom: 0em;">
+                            <a href="#" class="ui circular icon button"><i class="github icon"></i></a>
+                            <a href="#" class="ui wechat circular icon button about"><i class="weixin icon"></i></a>
+                            <a href="#" class="ui qq circular icon button" data-content="xxxxxx" data-position="bottom center"><i class="qq icon"></i></a>
+                        </div>
+                        <div class="ui wechat-pic flowing popup transition hidden">
+                            <img src="../static/images/wechat.png" th:src="@{/images/wechat.png}" alt="" class="ui rounded image" style="width: 100px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--底部-->
+<footer th:replace="_fragments::footer" class="ui inverted segment vertical">
+</footer>
+<!--/*/<th:block th:replace="_fragments :: script">/*/-->
+<!--/*/</th:block>/*/-->
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+    $('.qq').popup();
+    $('.wechat.about').popup({
+        popup:$('.wechat-pic'),
+        on:'hover',
+        position:'bottom center'
+    });
+    $('.left-div')
+        .transition('jiggle');
+    $('.right-div')
+        .transition('bounce')
+    ;
+</script>
+</body>
+</html>

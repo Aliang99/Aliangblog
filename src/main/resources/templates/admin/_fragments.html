@@ -1,0 +1,126 @@
+    <!DOCTYPE html>
+    <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head th:fragment="header(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, inital-scale=1.0">
+    <title th:replace="${title}">博客详情</title>
+    <!--Semantic UI CSS文件CDN-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/mne.css" th:href="@{/css/mne.css}"><!--自定义css库-->
+    <link rel="stylesheet" href="../static/lib/editormd/css/editormd.min.css" th:href="@{/lib/editormd/css/editormd.min.css}"><!--merkdown插件css库-->
+    </head>
+    <body>
+
+
+    <nav th:fragment="nav(active_element)" class="ui segment vertical inverted m-padded-tb-mini m-shadow-small">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h3 class="ui teal header item">管理后台</h3>
+            <a href="../index.html" th:href="@{/admin/index}" class="item m-mobile-hide m-item" th:classappend="${active_element==1}?'orange active'"><i class="home icon"></i>首页</a>
+            <a href="../types.html" th:href="@{/admin/types_manager}" class="item m-mobile-hide m-item" th:classappend="${active_element==2}?'orange active'"><i class="bars icon"></i>分类管理</a>
+            <a href="../tags.html" th:href="@{/admin/tags_manager}" class="item m-mobile-hide m-item" th:classappend="${active_element==3}?'orange active'"><i class="tags icon"></i>标签管理</a>
+            <a href="../blog.html" th:href="@{/admin/blogs_manager}" class="item m-mobile-hide m-item" th:classappend="${active_element==4}?'orange active'"><i class="paper plane outline icon"></i>博客管理</a>
+            <a href="../about.html" th:href="@{/admin/aboutme}" class="item m-mobile-hide m-item" th:classappend="${active_element==5}?'orange active'"><i class="info icon"></i>关于我管理</a>
+            <a href="../about.html" th:href="@{/index}" class="item m-mobile-hide m-item"><i class="exchange icon"></i>切换到前端</a>
+
+            <!--管理员头像-->
+            <div class="right menu m-mobile-hide m-item">
+                <div class="ui dropdown item">
+                    <div class="text">
+                        <img class="ui avatar image" src="../../static/images/dm111.jpg" th:src="@{/images/dm1.jpg}" style="width: 30px;height: 50px;">
+                        <span th:text="${session.user.nickname}">阿莨</span>
+                    </div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a href="#" class="item">个人资料</a>
+                        <a href="#" th:href="@{/admin/loginOut}" class="item">退出登录</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show" style="width: 50px;height: 20px;">
+        <i class="sidebar icon"></i>
+    </a>
+    </nav>
+
+    <!--二级导航-->
+    <div th:fragment="nav_two(active_number)" class="ui attached pointing menu">
+    <div class="ui container">
+        <div class="right menu">
+            <a href="blog_add.html" th:href="@{/admin/blogput}" class="item teal" th:classappend="${active_number==1}?'active'">博客发布</a>
+            <a href="blog_manager.html" th:href="@{/admin/blog_manager}" class="item teal" th:classappend="${active_number==2}?'active'">博客管理</a>
+        </div>
+    </div>
+    </div>
+
+    <!--底部-->
+    <footer th:fragment="footer" class="ui inverted segment vertical m-padded-tb-large" style="margin-top:1%;">
+        <div class="ui center aligned container">
+            <div class="ui inverted divided stackable grid">
+                <!--二维码-->
+                <div class="three wide column">
+                    <img src="../static/images/wechat.png" th:src="@{/images/wechat.png}" class="ui rounded image centered" alt="" style="width:150px;">
+                </div>
+                <div id="newBlogList-container">
+                    <div class="three wide column">
+                        <h4 class="ui inverted m-text-thin m-text-spaced m-opacity-middel">最新微博</h4>
+                        <div class="ui inverted link list" th:fragment="newBlogList">
+                            <a href="#" th:href="@{/blog/{id}(id=${recommendBlog.id})}" target="_blank" class="item m-black m-text-thin"  th:each="recommendBlog : ${recommendBlogs}">
+                                <span  th:text="${recommendBlog.title}">用户故事</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!--联系我-->
+                <div class="four wide column middle">
+                    <h4 class="ui inverted m-text-thin m-text-spaced m-opacity-middel left floated">联系我</h4>
+                    <div class="ui inverted link list">
+                        <button class="ui circular icon red button" data-tooltip="微博" data-position="top center">
+                            <i class="weibo icon"></i>
+                        </button>
+                        <button class="ui circular icon green button" data-tooltip="微信" data-position="top center">
+                            <i class="wechat icon"></i>
+                        </button>
+                        <button class="ui circular icon blue button" data-tooltip="QQ" data-position="top center">
+                            <i class="qq icon"></i>
+                        </button>
+                        <button class="ui circular icon button" data-tooltip="GitHub" data-position="top center">
+                            <i class="github icon"></i>
+                        </button>
+                        <button class="ui circular icon orange button" data-tooltip="邮箱" data-position="top center">
+                            <i class="mail icon"></i>
+                        </button>
+                    </div>
+                </div>
+                <!--博客语录-->
+                <div class="six wide column">
+                    <h4 class="ui inverted m-text-thin m-text-spaced m-opacity-middel">站长寄语</h4>
+                    <p class="inverted m-text-thin m-text-spaced m-opacity-mini">这是我的最新博客，会分享关于线程、写作、思考相关的任何内容，希望可以给来到这的人有所帮助...</p>
+                </div>
+            </div>
+        </div>
+        <!--横线分割-->
+        <div class="ui inverted section divider m-padded-tb-mini"></div>
+        <div class="ui">
+            <p class="ui center aligned container m-text-thin m-text-spaced m-opacity-mini">
+                公司名称：上海xxxx科技有限公司|公司地址：上海市xx区xx路xxx号|电话：xxx-xxxxxxxx
+            </p>
+        </div>
+    </footer>
+
+
+    <!--js块-->
+    <th:block th:fragment="script">
+    <!--JQuery-->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+    <!--semantic UI JS文件CDN-->
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <script src="../../static/lib/editormd/editormd.js" th:src="@{/lib/editormd/editormd.min.js}"></script>
+    <script src="js/mouse.js" th:src="@{/js/mouse.js}"></script>
+    <script>
+        $("#newBlogList-container").load(/*[[@{/footer/newblogs}]]*/"/footer/newblogs"); //动态加载底部的最新推荐模块数据
+    </script>
+    </th:block>
+    </body>
+    </html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="admin/_fragments::header(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, inital-scale=1.0">
+    <title>标签管理</title>
+    <!--Semantic UI CSS文件CDN-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/mne.css">
+</head>
+<body>
+<!--导航部分-->
+<nav th:replace="admin/_fragments::nav(3)" class="ui segment vertical inverted m-padded-tb-mini m-shadow-small">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h3 class="ui teal header item">Blog</h3>
+            <a href="./index.html" class="item m-mobile-hide m-item"><i class="home icon"></i>首页</a>
+            <a href="./types_manager.html" class="active item m-mobile-hide m-item"><i class="bars icon"></i>分类</a>
+            <a href="./tags.html" class="item m-mobile-hide m-item"><i class="tags icon"></i>标签</a>
+            <a href="./blog.html" class="item m-mobile-hide m-item"><i class="paper plane outline icon"></i>最新推荐</a>
+            <a href="archives.html" class="item m-mobile-hide m-item"><i class="bookmark icon"></i>归档</a>
+            <a href="about.html" class="item m-mobile-hide m-item"><i class="info icon"></i>关于我</a>
+            <div class="right inverted item m-mobile-hide m-item">
+                <div class="ui icon inverted transparent input">
+                    <input type="text" placeholder="搜索...">
+                    <i class="search link icon"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show" style="width: 50px;height: 20px;">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+<!--二级导航-->
+<div class="ui attached pointing menu">
+    <div class="ui container">
+        <div class="right menu">
+            <a href="tags_add.html" th:href="@{/admin/tags_add}" class="item">新增标签</a>
+            <a href="#" class="active item teal">标签管理</a>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<!--中间部分-->
+<div class="m-container-admin-tag m-padded-tb-mini middle">
+    <div class="ui container m-padded-lr-tiny">
+        <div class="ui message large" th:classappend="${msg == null}?'hidden':'teal basic'">
+            <div class="middle aligned content" th:utext="${msg}"></div>
+            <i class="close icon top aligned"></i>
+        </div>
+        <table class="ui orange celled table">
+            <thead>
+            <tr>
+                <th class="one wide">编号</th>
+                <th class="single line three wide">标签名称</th>
+                <th class="single line two wide">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="tag,iterStat : ${page.content}">
+                <td th:text="${{page.size * page.number + iterStat.index+1}}">1</td>
+                <td th:text="${tag.tagName}">刻意联系清单</td>
+                <td>
+                    <a href="#" th:href="@{/admin/tags_update/{id}(id=${tag.id})}" class="ui teal basic button"><i class="edit icon"></i>编辑</a>
+                    <a href="#" th:href="@{/admin/tags_delete/{id}(id=${tag.id})}" class="ui orange basic button"><i class="close icon"></i>删除</a>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr th:unless="${page.totalPages}>0">
+                <th colspan="12" class="ui grey header center aligned">
+                    数据库中暂无数据
+                </th>
+            </tr>
+            <tr th:unless="${page.totalPages}<=1">
+                <th colspan="6">
+                    <div class="ui left floated pagination menu" th:if="${page.totalPages}>1">
+                        <a href="#" class="icon item mini" th:href="@{/admin/tags_manager/(page=(${page.number}-1)<0?'':${page.number}-1)}" th:unless="${page.first}">
+                            上一页
+                        </a>
+                        <a href="#" class="icon item mini" th:href="@{/admin/tags_manager/(page=(${page.number}+1)>${page.totalPages}?'':${page.number}+1)}"  th:unless="${page.last}">
+                            下一页
+                        </a>
+                    </div>
+                    <a href="" th:href="@{/admin/tags_add}" class="ui right floated teal basic button">新增</a>
+                </th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+</div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<!--底部-->
+<footer th:replace="admin/_fragments::footer" class="ui inverted segment vertical">
+    <div class="ui center aligned container m-padded-tb-massive">
+        <div class="ui inverted divided stackable grid">
+            <!--二维码-->
+            <div class="three wide column">
+                <img src="../../static/images/wechat.png" th:src="@{/images/wechat.png}" class="ui rounded image centered" alt="" style="width:150px;">
+            </div>
+            <!--最新博客-->
+            <div class="three wide column">
+                <h4 class="ui inverted m-text-thin m-text-spaced m-opacity-middel">最新微博</h4>
+                <div class="ui inverted link list">
+                    <a href="#" class="item">用户故事201314</a>
+                    <a href="#" class="item">用户故事201314</a>
+                    <a href="#" class="item">用户故事201314</a>
+                    <a href="#" class="item">用户故事201314</a>
+                    <a href="#" class="item">用户故事201314</a>
+                </div>
+            </div>
+            <!--联系我-->
+            <div class="four wide column">
+                <h4 class="ui inverted m-text-thin m-text-spaced m-opacity-middel">联系我</h4>
+                <div class="ui inverted link list">
+                    <!--使用表格框架调整文字和图标对齐-->
+                    <div class="item m-padded-tb-mini"><i class="weibo icon"></i>我是阿莨啊-</div>
+                    <div class="item m-padded-tb-mini"><i class="wechat icon"></i>h4470230</div>
+                    <div class="item m-padded-tb-mini"><i class="github icon"></i>aliang99</div>
+                    <div class="item m-padded-tb-mini"><i class="qq icon"></i>1294470230</div>
+                    <div class="item m-padded-tb-mini"><i class="envelope icon"></i>372158049@qq.com</div>
+                </div>
+            </div>
+            <!--博客语录-->
+            <div class="six wide column">
+                <h4 class="ui inverted m-text-thin m-text-spaced m-opacity-middel">站长寄语</h4>
+                <p class="inverted m-text-thin m-text-spaced m-opacity-mini">这是我的最新博客，会分享关于线程、写作、思考相关的任何内容，希望可以给来到这的人有所帮助...</p>
+            </div>
+        </div>
+    </div>
+    <!--横线分割-->
+    <div class="ui inverted section divider"></div>
+    <div class="ui m-padded-tb-middel">
+        <p class="ui center aligned container m-text-thin m-text-spaced m-opacity-mini">
+            公司名称：上海宽娱数码科技有限公司|公司地址：上海市杨浦区政立路485号|电话：021-25099888
+        </p>
+    </div>
+    </footer>
+
+
+<!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
+<!--/*/</th:block>/*/-->
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+    $('.dropdown').dropdown({
+        on : 'hover'
+    });
+    //后端回传的消息框 点击关闭操作
+    $('.message .close')
+        .on('click', function() {
+            $(this)
+                .closest('.message')
+                .transition('fade')
+            ;
+        });
+</script>
+</body>
+</html>

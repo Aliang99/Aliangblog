@@ -1,0 +1,15 @@
+$('.blog-div')
+    .transition('pulse');
+$('.types-div')
+    .transition('pulse');
+$('.tags-div')
+    .transition('pulse');
+$('.tuijian-div')
+    .transition('pulse');
+$('.erweima-div')
+    .transition('pulse');
+$('.nav-div')
+    .transition('bounce');
+$('.footer-div')
+    .transition('bounce');
+$('.blogs-div').transition("glow")

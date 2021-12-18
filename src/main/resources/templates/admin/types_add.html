@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="admin/_fragments::header(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, inital-scale=1.0">
+    <title>分类管理</title>
+    <!--Semantic UI CSS文件CDN-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/mne.css">
+</head>
+<body>
+<!--导航部分-->
+<nav th:replace="admin/_fragments::nav(2)" class="ui segment vertical inverted m-padded-tb-mini m-shadow-small">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h3 class="ui teal header item">Blog</h3>
+            <a href="./index.html" class="item m-mobile-hide m-item"><i class="home icon"></i>首页</a>
+            <a href="./types_manager.html" class="active item m-mobile-hide m-item"><i class="bars icon"></i>分类</a>
+            <a href="./tags.html" class="item m-mobile-hide m-item"><i class="tags icon"></i>标签</a>
+            <a href="./blog.html" class="item m-mobile-hide m-item"><i class="paper plane outline icon"></i>最新推荐</a>
+            <a href="archives.html" class="item m-mobile-hide m-item"><i class="bookmark icon"></i>归档</a>
+            <a href="about.html" class="item m-mobile-hide m-item"><i class="info icon"></i>关于我</a>
+            <div class="right inverted item m-mobile-hide m-item">
+                <div class="ui icon inverted transparent input">
+                    <input type="text" placeholder="搜索...">
+                    <i class="search link icon"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show" style="width: 50px;height: 20px;">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+<div class="ui attached pointing menu">
+    <div class="ui container">
+        <div class="right menu">
+            <a href="#" class="item teal active">新增分类</a>
+            <a href="types_manager.html" th:href="@{/admin/types_manager}" class="item">分类管理</a>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<!--中间部分-->
+<div class="m-container m-padded-tb-big middle">
+    <div class="ui container">
+        <form action="#" class="ui form m-padded-lr-big" method="post" th:action="${type.id == null}?@{/admin/types}:@{/admin/types/update/{id}(id=${type.id})}" th:object="${type}">
+            <div class="fieldd">
+                <div class="ui left labeled input fluid">
+                    <label class="ui teal basic label">分类</label>
+                    <input id="typeName" type="text" name="typeName" placeholder="分类名称" th:value="*{typeName}">
+                </div>
+
+            </div>
+            <div class="ui error message" th:text="${msg}"></div>
+
+            <!--/*/
+                <div class="ui negative message" th:if="${#fields.hasErrors('typeName')}">
+                    <i class="close icon"></i>
+                    <div class="header">注意:</div>
+                    <p th:errors="*{typeName}">提交信息不符合规则</p>
+                </div>
+            /*/-->
+            <!--底部三个按钮-->
+            <div class="ui right aligned container m-padded-tb-small">
+                <a class="ui gray button" type="button" th:href="@{/admin/types_manager}">返回</a>
+                <button class="ui teal submit button">提交</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<!--底部-->
+<footer th:replace="_fragments::footer" class="ui inverted segment vertical">
+    <div class="ui center aligned container m-padded-tb-massive">
+        <div class="ui inverted divided stackable grid">
+            <!--二维码-->
+            <div class="three wide column">
+                <img src="../../static/images/wechat.png" th:src="@{/images/wechat.png}" class="ui rounded image centered" alt="" style="width:150px;">
+            </div>
+            <!--最新博客-->
+            <div class="three wide column">
+                <h4 class="ui inverted m-text-thin m-text-spaced m-opacity-middel">最新微博</h4>
+                <div class="ui inverted link list">
+                    <a href="#" class="item">用户故事201314</a>
+                    <a href="#" class="item">用户故事201314</a>
+                    <a href="#" class="item">用户故事201314</a>
+                    <a href="#" class="item">用户故事201314</a>
+                    <a href="#" class="item">用户故事201314</a>
+                </div>
+            </div>
+            <!--联系我-->
+            <div class="four wide column">
+                <h4 class="ui inverted m-text-thin m-text-spaced m-opacity-middel">联系我</h4>
+                <div class="ui inverted link list">
+                    <!--使用表格框架调整文字和图标对齐-->
+                    <div class="item m-padded-tb-mini"><i class="weibo icon"></i>我是阿莨啊-</div>
+                    <div class="item m-padded-tb-mini"><i class="wechat icon"></i>h4470230</div>
+                    <div class="item m-padded-tb-mini"><i class="github icon"></i>aliang99</div>
+                    <div class="item m-padded-tb-mini"><i class="qq icon"></i>1294470230</div>
+                    <div class="item m-padded-tb-mini"><i class="envelope icon"></i>372158049@qq.com</div>
+                </div>
+            </div>
+            <!--博客语录-->
+            <div class="six wide column">
+                <h4 class="ui inverted m-text-thin m-text-spaced m-opacity-middel">站长寄语</h4>
+                <p class="inverted m-text-thin m-text-spaced m-opacity-mini">这是我的最新博客，会分享关于线程、写作、思考相关的任何内容，希望可以给来到这的人有所帮助...</p>
+            </div>
+        </div>
+    </div>
+    <!--横线分割-->
+    <div class="ui inverted section divider"></div>
+    <div class="ui m-padded-tb-middel">
+        <p class="ui center aligned container m-text-thin m-text-spaced m-opacity-mini">
+            公司名称：上海宽娱数码科技有限公司|公司地址：上海市杨浦区政立路485号|电话：021-25099888
+        </p>
+    </div>
+</footer>
+
+
+
+<!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
+<!--/*/</th:block>/*/-->
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+    $('.dropdown').dropdown({
+        on : 'hover'
+    });
+    $('.ui.form').form({
+        fields: {
+            title: {
+                identifier: 'typeName',
+                rules: [{
+                    type: 'empty',
+                    prompt: '分类名称不能为空'
+                }]
+            }
+        }
+    });
+    //后端回传的消息框 点击关闭操作
+    $('.message .close')
+        .on('click', function() {
+            $(this)
+                .closest('.message')
+                .transition('fade')
+            ;
+        });
+</script>
+</body>
+</html>

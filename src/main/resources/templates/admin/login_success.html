@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="admin/_fragments::header(~{::title})">
+    <title>登录成功</title>
+</head>
+<body>
+<!--导航部分-->
+<nav th:replace="admin/_fragments::nav(1)" class="ui segment vertical inverted m-padded-tb-mini m-shadow-small">
+</nav>
+<!--中间部分-->
+<div class="m-container m-padded-tb-big middle">
+    <div class="ui container">
+
+        <div class="ui success message large">
+            <h3>Hi</h3>
+            <p>阿莨，欢迎登录</p>
+        </div>
+        <img src="../../static/images/dm111.jpg" th:src="@{/images/dm1.jpg}" class="ui rounded bordered fluid image">
+
+    </div>
+</div>
+<!--底部-->
+<footer th:replace="admin/_fragments::footer" class="ui inverted segment vertical">
+</footer>
+<!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
+<!--/*/</th:block>/*/-->
+<script>
+    var contentEditor;
+    $(function() {
+        contentEditor = editormd("md-content", {
+            width   : "100%",
+            height  : 640,
+            syncScrolling : "single",
+            path    : "../../static/lib/editormd/lib/"
+        });
+    });
+    $('.ui.form').form({
+        fields:{
+            title:{
+                identifier:'title',
+                rules:[{
+                    type:'empty',
+                    prompt:'标题：请输入博客标题'
+                }]
+            },
+            type:{
+                identifier:'type',
+                rules:[{
+                    type:'empty',
+                    prompt:'分类：请选择分类'
+                }]
+            },
+            tag:{
+                identifier:'tag',
+                rules:[{
+                    type:'empty',
+                    prompt:'标签：请选择标签'
+                }]
+            },
+            content:{
+                identifier:'content',
+                rules:[{
+                    type:'empty',
+                    prompt:'博文内容：请输入博文内容'
+                }]
+            }
+        }
+    });
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+    $('.dropdown').dropdown({
+        on : 'hover'
+    });
+</script>
+</body>
+</html>

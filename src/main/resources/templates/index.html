@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments::header(~{::title})">
+    <title>首页</title>
+</head>
+<body>
+<!--导航部分-->
+<nav th:replace="_fragments::nav(1)" class="ui segment vertical inverted m-padded-tb-mini m-shadow-small">
+</nav>
+
+<div class="m-bg">
+    <!--中间内容-->
+    <div class="m-container m-padded-tb-big m-padded-lr-big">
+        <!--container容器:根据屏幕大小自动居中显示 两边留空-->
+        <div class="ui container">
+            <!--grid布局，左边十一份，右边五份进行左右划分-->
+            <div class="ui grid stackable teal">
+                <!--左边部分 包括博文、图片、头像、时间、浏览次数-->
+                <div class="eleven wide column segments blog-div">
+                    <!--博客头部-->
+                    <div class="segment ui attached top teal">
+                        <!--一左一右布局-->
+                        <div class="ui middle two column grid">
+                            <!--第一列-->
+                            <div class="column">
+                                <i class="calendar alternate icon teal"></i><span class="ui header orange">最近更新博客</span>
+                            </div>
+                            <!--第二列-->
+                            <div class="column right aligned">
+                                共&nbsp;<div class="ui header orange m-inline-block" th:text="${page.totalElements}">14</div>&nbsp;篇
+                            </div>
+                        </div>
+                    </div>
+                    <!--文章列表-->
+                    <div class="ui segment top right attached" th:if="${#arrays.length(page.content)>0}">
+                        <div class="ui link cards">
+                            <div class="card  blog-div"  th:each="blog,iterStat : ${page.content}">
+                                <div class="content extra ">
+                                    <div class="right floated meta">
+                                        <i class="icon calendar top aligned"></i>
+                                        <span th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd')}">2020-8-24</span>
+                                    </div>
+                                    <img class="ui avatar image" src="/images/avatar/large/elliot.jpg" th:src="@{/images/bg/bg5.jpg}">
+                                    <span>
+                                            <i class="user icon"></i>
+                                            <span class="ui orange" th:text="${blog.user.nickname}">阿莨</span>&nbsp;&nbsp;&nbsp;
+                                            <i class="icon eye top aligned"></i>&nbsp;
+                                            <span th:text="${blog.views}">222</span>
+                                    </span>
+                                </div>
+                                    <!--                    首图-->
+                                    <a class="image" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank">
+                                        <img src="/images/avatar2/large/matthew.png" th:src="@{/images/bg/bg6.jpg}">
+                                    </a>
+                                    <!--                    标题-->
+                                    <a class="content" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank">
+                                        <div class="header">
+                                            <font style="vertical-align: inherit;">
+                                                <font style="vertical-align: inherit;">
+                                        <span th:text="'&nbsp;&nbsp;&nbsp;'+|${{page.size * page.number + iterStat.index+1}}|+'.&nbsp;'" class="ui header teal">
+                                            </span>
+                                                    <a href="#" class="ui m-black header teal m-text-thin-header" th:text="${blog.title}" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank">
+                                                        你真的理解什么是自由财富吗？
+                                                    </a>
+                                                </font>
+                                            </font>
+                                        </div>
+                                        <!--                        描述-->
+                                        <div class="description">
+                                            <font style="vertical-align: inherit;">
+                                                <font style="vertical-align: inherit;">
+                                                    <div class="div" th:text="${blog.discription}" style="margin-left: 1em!important;margin-top: 1em!important;margin-bottom: 1em!important;">
+                                                    </div>
+                                                </font>
+                                            </font>
+                                        </div>
+                                    </a>
+                                <!--                    分类标签-->
+                                <div class="extra content">
+                                  <span class="right floated">
+                                      <font style="vertical-align: inherit;">
+                                          <font style="vertical-align: inherit;">
+                                            <a href="#" th:href="@{/types/{id}(id=${blog.type.id})}" class="ui label orange basic m-black" target="_blank" th:text="${blog.type.typeName}">认知升级</a>
+                                          </font>
+                                      </font>
+                                  </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--分页-->
+                    <!--博客底部-->
+                    <div class="ui segment top right attached" th:if="${page.totalPages}>1">
+                        <!--一左一右布局-->
+                        <div class="ui middle two column grid">
+                            <!--第一列-->
+                            <div class="column">
+                                <a href="#" class="ui teal basic button m-black" th:href="@{/(page=(${page.number}-1)<0?'':${page.number}-1)}" th:unless="${page.first}">上一页</a>
+                            </div>
+                            <!--第二列-->
+                            <div class="column right aligned">
+                                <a href="#" class="ui teal basic button m-black" th:href="@{/(page=(${page.number}+1)>${page.totalPages}?'':${page.number}+1)}"  th:unless="${page.last}">下一页</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--右边部分 多个卡片例如：分类、标签、关于我-->
+                <div class="five wide column">
+                    <!--分类-->
+                    <div id="type-name" class="ui segments fluid vertical menu types-div">
+                        <!--分类卡片头部-->
+                        <div class="ui secondary segment teal m-padding-tb-small-index">
+                            <!--双列布局-->
+                            <div class="ui two column grid">
+                                <div class="column">
+                                    <i class="bars icon teal"></i><span class="ui header orange small">分类</span>
+                                </div>
+                                <div class="column right aligned">
+                                    <a href="#" target="_blank" class="ui header teal small m-text-thin-index">更多&nbsp;<i class="angle double right icon teal"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#" class="item" th:each="type : ${types}">
+                            <span th:text="${type.typeName}">学习日志</span>
+                            <div class="ui teal basic left pointing label" th:text="${#arrays.length(type.blogs)}">13</div>
+                        </a>
+                    </div>
+                    <!--标签-->
+                    <div class="ui segments  tags-div">
+                        <!--标签卡片头部-->
+                        <div class="ui secondary segment teal m-padding-tb-small-index">
+                            <div class="ui two column grid">
+                                <div class="column">
+                                    <i class="icon tags teal"></i><span class="ui header orange small ">标签</span>
+                                </div>
+                                <div class="right aligned column">
+                                    <a href="#" target="_blank" class="ui header teal small m-text-thin-index">更多
+                                        <i class="angle double right icon teal m-text-thin-index"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--标签内容部分  自适应排列-->
+                        <div class="ui segment">
+                            <a href="#" target="_blank" class="ui teal basic left pointing label m-margin-tb-tiny m-margin-lr-small m-black" th:each="tag : ${tags}">
+                                <span th:text="${tag.tagName}">装机心得</span>
+                                <div class="detail" th:text="${#arrays.length(tag.blogs)}">22</div>
+                            </a>
+                        </div>
+                    </div>
+                    <!--最新推荐-->
+                    <div class="ui segments m-margin-tb-small  fluid vertical menu tuijian-div">
+                        <!--最新推荐卡片头部-->
+                        <div class="ui secondary segment teal  m-padding-tb-small-index">
+                            <i class="icon paper plane teal"></i><span class="ui header orange small">最新推荐</span>
+                        </div>
+                        <!--最新推荐内容部分  自适应排列-->
+                        <a href="#" th:href="@{/blog/{id}(id=${recommendBlog.id})}" target="_blank" class="item m-black m-text-thin"  th:each="recommendBlog : ${recommendBlogs}">
+                            <span  th:text="${recommendBlog.title}">用户故事</span>
+                        </a>
+                    </div>
+                    <!--二维码-->
+                    <h4 class="ui horizontal divider header teal m-margin-tb-small">扫码关注我👇</h4>
+                    <div class="ui centered card erweima-div" style="width: 21em;">
+<!--                        <img src="../static/images/wechat.png" th:src="@{/images/wechat.png}" alt="" class="ui roounded image">-->
+                        <img src="../static/images/wechat.png" th:src="@{/images/wechat.png}" alt="" class="ui roounded image middle">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<!--底部-->
+<footer th:replace="_fragments::footer" class="ui inverted segment vertical">
+</footer>
+<!--/*/<th:block th:replace="_fragments :: script">/*/-->
+<!--/*/</th:block>/*/-->
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+    $(".div.m-text").text(function(index,currentText) {
+        return currentText.substr(0,35)+"...";
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="_fragments::header(~{::title})">
+    <title>标签页面</title>
+</head>
+<body>
+<!--导航部分-->
+<nav th:replace="_fragments::nav(3)" class="ui segment vertical inverted m-padded-tb-mini m-shadow-small">
+</nav>
+
+<!--中间部分-->
+<div class="m-container-archives m-padded-tb-big">
+    <div class="ui container">
+        <!--头部-->
+        <div class=" ui segment attached top  teal">
+            <!--一左一右布局-->
+            <div class="ui middle two column grid">
+                <!--第一列-->
+                <div class="column">
+                    <div class="ui header teal">标签</div>
+                </div>
+                <!--第二列-->
+                <div class="column right aligned">
+                    共&nbsp;<div class="ui header orange m-inline-block" th:text="${#arrays.length(tags)}">14</div>&nbsp;个
+                </div>
+            </div>
+        </div>
+        <!--标签栏内容-->
+        <div class="ui segment attached">
+            <div class="ui segment top right teal m-margin-lr-big">
+                <div class="ui labeled button m-margin-tb-tiny" th:each="tag:${tags}">
+                    <!--分类标签的组合-->
+                    <a href="#" th:href="@{/tags/{id}(id=${tag.id})}" class="ui basic button" th:classappend="${tag.id == activeTagId} ? teal" th:text="${tag.tagName}">装机指南</a>
+                    <div class="ui basic left pointing label" th:text="${#arrays.length(tag.blogs)}" th:classappend="${tag.id==activeTagId}?'teal'">24</div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <!--文章列表-->
+        <div class="ui segment top right attached" th:if="${#arrays.length(page.content)>0}">
+            <div class="ui link cards">
+                <div class="card  blog-div"  th:each="blog,iterStat : ${page.content}">
+                    <div class="content extra ">
+                        <div class="right floated meta">
+                            <i class="icon calendar top aligned"></i>
+                            <span th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd')}">2020-8-24</span>
+                        </div>
+                        <img class="ui avatar image" src="/images/avatar/large/elliot.jpg" th:src="@{/images/bg/bg5.jpg}">
+                        <span>
+                                            <i class="user icon"></i>
+                                            <span class="ui orange" th:text="${blog.user.nickname}">阿莨</span>&nbsp;&nbsp;&nbsp;
+                                            <i class="icon eye top aligned"></i>&nbsp;
+                                            <span th:text="${blog.views}">222</span>
+                                    </span>
+                    </div>
+                    <!--                    首图-->
+                    <a class="image" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank">
+                        <img src="/images/avatar2/large/matthew.png" th:src="@{/images/bg/bg6.jpg}">
+                    </a>
+                    <!--                    标题-->
+                    <a class="content" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank">
+                        <div class="header">
+                            <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">
+                                        <span th:text="'&nbsp;&nbsp;&nbsp;'+|${{page.size * page.number + iterStat.index+1}}|+'.&nbsp;'" class="ui header teal">
+                                            </span>
+                                    <a href="#" class="ui m-black header teal m-text-thin-header" th:text="${blog.title}" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank">
+                                        你真的理解什么是自由财富吗？
+                                    </a>
+                                </font>
+                            </font>
+                        </div>
+                        <!--                        描述-->
+                        <div class="description">
+                            <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">
+                                    <div class="div" th:text="${blog.discription}" style="margin-left: 1em!important;margin-top: 1em!important;margin-bottom: 1em!important;">
+                                    </div>
+                                </font>
+                            </font>
+                        </div>
+                    </a>
+                    <!--                    分类标签-->
+                    <div class="extra content">
+                                  <span class="right floated">
+                                      <font style="vertical-align: inherit;">
+                                          <font style="vertical-align: inherit;">
+                                            <a href="#" th:href="@{/types/{id}(id=${blog.type.id})}" class="ui label orange basic m-black" target="_blank" th:text="${blog.type.typeName}">认知升级</a>
+                                          </font>
+                                      </font>
+                                  </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--分页-->
+        <!--博客底部-->
+        <div class="ui segment top right attached" th:if="${page.totalPages}>1">
+            <!--一左一右布局-->
+            <div class="ui middle two column grid">
+                <!--第一列-->
+                <div class="column">
+                    <a href="#" class="ui teal basic button m-black" th:href="@{/(page=(${page.number}-1)<0?'':${page.number}-1)}" th:unless="${page.first}">上一页</a>
+                </div>
+                <!--第二列-->
+                <div class="column right aligned">
+                    <a href="#" class="ui teal basic button m-black" th:href="@{/(page=(${page.number}+1)>${page.totalPages}?'':${page.number}+1)}"  th:unless="${page.last}">下一页</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--底部-->
+<footer th:replace="_fragments::footer" class="ui inverted segment vertical">
+</footer>
+<!--/*/<th:block th:replace="_fragments :: script">/*/-->
+<!--/*/</th:block>/*/-->
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+</script>
+</body>
+</html>

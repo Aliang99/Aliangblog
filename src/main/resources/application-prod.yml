@@ -1,0 +1,21 @@
+#生产环境配置
+spring:
+  datasource: #数据源配置
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/blog?serverTimezone=Asia/Shanghai
+    username: root
+    password: 111111
+  jpa:
+    hibernate:
+      ddl-auto: none #update表示每次更新时 判断数据库与实体字段是否一致，不一致会清空数据库新建 none表示不比对
+    show-sql: true  #在控制台打印输入执行得sql语句
+    database: mysql #数据库类型
+logging:
+  level:
+    root: info  #对于整个项目的输出信息进行记录
+    com.aliang: debug #对于整个包中进行debug时就行记录
+  file:
+    path: /log/ #日志文件的保存路径
+    name: blog-prod.log #日志文件名
+server:
+  port: 8081

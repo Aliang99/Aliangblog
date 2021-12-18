@@ -1,0 +1,22 @@
+#开发环境配置
+spring:
+  #数据源配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/blog?serverTimezone=Asia/Shanghai #不设置为上海时间 可能会出现java中new date（)的时间录入数据库会不一致
+    username: root
+    password: 111111
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database: mysql
+logging:
+  level:
+    root: ERROR
+    com.aliang: ERROR
+  file:
+    path: /log/
+    name: blog-dev.log
+server:
+  port: 80

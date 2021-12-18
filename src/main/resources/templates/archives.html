@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/html">
+<head th:replace="_fragments::header(~{::title})">
+    <title>归档页面</title>
+</head>
+<body>
+<!--导航部分-->
+<nav th:replace="_fragments::nav(5)" class="ui segment vertical inverted m-padded-tb-mini m-shadow-small">
+</nav>
+
+<!--中间部分-->
+<div class="m-container-archives m-padded-tb-big">
+    <div class="ui container">
+        <!--头部-->
+        <div class=" ui segment attached top teal">
+            <!--一左一右布局-->
+            <div class="ui middle two column grid">
+                <!--第一列-->
+                <div class="column">
+                    <div class="ui teal header">归档</div>
+                </div>
+                <!--第二列-->
+                <div class="column right aligned">
+                    共<div class="ui header orange m-inline-block" th:text="${blogCount}">&nbsp;54&nbsp;</div>篇
+                </div>
+            </div>
+        </div>
+        <th:block th:each="item : ${archiveMap}">
+            <h2 class="ui center orange aligned header" th:text="${item.key}">2017</h2>
+            <div class="ui fluid vertical menu">
+                <a href="#" target="_blank" class="item" th:href="@{/blog/{id}(id=${blog.id})}" th:each="blog : ${item.value}">
+               <span>
+                   <i class="circle icon teal"></i><span th:text="${blog.title}">关于刻意练习的清单</span>
+                   <div class="ui teal basic left pointing label m-padded-tb-mini" th:text="${#dates.format(blog.createTime,'MMMdd日')}">9月25日</div>
+               </span>
+                    <div class="ui orange basic left pointing label m-padded-mini" th:text="${blog.typeName}">原创</div>
+                </a>
+            </div>
+<!--            <div class="ui orange header horizontal divider m-padded-tb-middel">-->
+<!--                ❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤-->
+<!--            </div>-->
+        </th:block>
+
+    </div>
+</div>
+
+<!--底部-->
+<footer th:replace="_fragments::footer" class="ui inverted segment vertical">
+
+</footer>
+<!--/*/<th:block th:replace="_fragments :: script">/*/-->
+<!--/*/</th:block>/*/-->
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+</script>
+</body>
+</html>
